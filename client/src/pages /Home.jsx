@@ -11,7 +11,7 @@ const Home = () => {
 
   const fetchBooks = async () => {
     try {
-      const res = await axios.get("http://localhost:3030/api/books");
+      const res = await axios.get("https://booklibrary-assignment.vercel.app/api/books");
       setBooks(res.data);
     } catch (err) {
       console.error("Error fetching books", err);
@@ -20,7 +20,7 @@ const Home = () => {
 
   const fetchMyBooks = async () => {
     try {
-      const res = await axios.get("http://localhost:3030/api/mybooks", {
+      const res = await axios.get("https://booklibrary-assignment.vercel.app/api/mybooks", {
         withCredentials: true,
       });
       setMyBooks(res.data); // full entries with bookId, status, rating
@@ -42,7 +42,7 @@ const Home = () => {
   const handleAddToMyBooks = async (bookId) => {
     try {
       await axios.post(
-        `http://localhost:3030/api/mybooks/${bookId}`,
+        `https://booklibrary-assignment.vercel.app/api/mybooks/${bookId}`,
         {},
         { withCredentials: true }
       );

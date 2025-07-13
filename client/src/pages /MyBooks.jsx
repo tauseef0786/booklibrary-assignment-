@@ -1,6 +1,9 @@
 const MyBookCard = ({ entry, onStatusChange, onRatingChange }) => {
-  const { bookId, status, rating } = entry;
-  const book = bookId;
+  if (!entry || !entry.bookId) return null; // prevent crashing
+
+  const book = entry.bookId;
+  const status = entry.status;
+  const rating = entry.rating;
 
   const handleStatus = (e) => {
     onStatusChange(book._id, e.target.value);

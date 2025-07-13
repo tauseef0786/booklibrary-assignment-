@@ -7,6 +7,13 @@ const generateToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: true,       
+  sameSite: "None",      
+  maxAge: 7 * 24 * 60 * 60 * 1000 
+};
+
 export const register = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -18,7 +25,7 @@ export const register = async (req, res) => {
 
     const token = generateToken(user._id);
     res
-      .cookie("token", token, { httpOnly: true })
+      .cookie("token", token, cookieOptions)
       .status(201)
       .json({ message: "Registered successfully" });
   } catch (err) {
@@ -36,15 +43,21 @@ export const login = async (req, res) => {
 
     const token = generateToken(user._id);
     res
-      .cookie("token", token, { httpOnly: true })
+      .cookie("token", token, cookieOptions)
       .json({ message: "Login successful" });
-  } catch {
+  } catch (err) {
     res.status(500).json({ message: "Login failed" });
   }
 };
 
 export const logout = (req, res) => {
-  res.clearCookie("token").json({ message: "Logged out" });
+  res
+    .clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None"
+    })
+    .json({ message: "Logged out" });
 };
 
 export const getMe = async (req, res) => {
